@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-import 'babel-polyfill';
 var browserify = require('browserify');
 var babelify = require('babelify');
 var util = require('gulp-util');
@@ -8,6 +7,43 @@ var source = require('vinyl-source-stream');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var webserver = require('gulp-webserver');
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+
+import 'babel-polyfill';
+
+var sourcePath = 'app/';
+var dest = 'dist/app/';
+var bootstrapSass = {
+  in: './node_modules/bootstrap-sass/'
+};
+var fonts = {
+  in: [sourcePath + 'fonts/*.*', bootstrapSass.in + 'assets/fonts/**/*'],
+  out: dest + 'fonts/'
+};
+var scss = {
+  in: sourcePath + 'scss/main.scss',
+  out: dest + 'css/',
+  watch: sourcePath + 'scss/**/*',
+  sassOpts: {
+    outputStyle: 'nested',
+    precison: 3,
+    errLogToConsole: true,
+    includePaths: [bootstrapSass.in + 'assets/stylesheets']
+  }
+};
+
+gulp.task('fonts', function () {
+    return gulp
+        .src(fonts.in)
+        .pipe(gulp.dest(fonts.out));
+});
+
+gulp.task('sass', ['fonts'], function () {
+    return gulp.src(scss.in)
+        .pipe(sass(scss.sassOpts))
+        .pipe(gulp.dest(scss.out));
+});
 
 gulp.task('build', function() {
   browserify('./app/main.js', { debug: true })
@@ -26,13 +62,8 @@ gulp.task('build', function() {
 });
 
 gulp.task('init', function() {
-  console.log('init');
   gulp.src("./app/**", { base: './' })
   .pipe(gulp.dest('dist'));
-});
-
-gulp.task('watch', function() {
-  gulp.watch(['./app/*.js'], ['init', 'build']);
 });
 
 gulp.task('webserver', function() {
@@ -45,4 +76,7 @@ gulp.task('webserver', function() {
     }));
 });
 
-gulp.task('default', ['init', 'build', 'watch', 'webserver']);
+gulp.task('default', ['sass', 'init', 'build', 'webserver'], function () {
+     gulp.watch(scss.watch, ['sass']);
+     gulp.watch('app/**/*.js', ['build']);
+});
