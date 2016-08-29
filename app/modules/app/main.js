@@ -1,10 +1,11 @@
 import $ from 'jquery';
 import kb from 'knockback';
 import Component from '../component';
-import ViewModel from './viewmodel.js';
-import Header from '../header/main.js';
-import Panel from '../panel/main.js';
-import Footer from '../footer/main.js';
+import ViewModel from './viewModel';
+import Header from '../header/main';
+import Panel from '../panel/main';
+import Footer from '../footer/main';
+import {getSeries, getSeason} from '../../js/utility';
 
 let APP = Component ({
 	viewTemplateName: "app",
@@ -25,13 +26,14 @@ let APP = Component ({
           name: module.viewTemplateName,
           data: module.viewModel ? module.viewModel : null,
       };
-			$.get("modules/" + module.viewTemplateName + "/view.html", function(data) {
-				module.viewTemplate = data;
-				module.loadTemplate();
-			});
+			$.get("modules/" + module.viewTemplateName + "/view.html")
+				.done( data => {
+					module.viewTemplate = data;
+					module.loadTemplate();
+			  });
 			this.viewModel['section' + view.name](view);
 		})
-  }
+  },
 });
 
 export default APP;

@@ -7,4 +7,4 @@ let ViewModel = function() {
 
 export default function() {
   return new ViewModel();
-}
+};

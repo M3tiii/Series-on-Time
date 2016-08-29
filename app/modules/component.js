@@ -18,16 +18,16 @@ class Component {
   };
 
   appendTemplate() {
-    let self = this;
-		$.get("modules/" + self.viewTemplateName + "/view.html", function(data) {
-			self.viewTemplate = data;
-			self.loadTemplate();
-			let app = kb.renderTemplate(self.viewTemplateName, self.viewModel);
-      $('body').append(app);
-		});
+		$.get("modules/" + this.viewTemplateName + "/view.html")
+      .done( data => {
+        this.viewTemplate = data;
+  			this.loadTemplate();
+  			let app = kb.renderTemplate(this.viewTemplateName, this.viewModel);
+        $('body').append(app);
+      });
   };
 };
 
 export default function(prop) {
   return _.extend(new Component(), prop);
-}
+};

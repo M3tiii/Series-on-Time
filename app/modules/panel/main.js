@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import kb from 'knockback';
 import Component from '../component';
-import ViewModel from './viewmodel.js';
+import ViewModel from './viewModel';
 
 let Panel = Component ({
 	viewTemplateName: "Panel",

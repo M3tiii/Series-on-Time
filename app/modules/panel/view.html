@@ -1,1 +1,18 @@
-<p>PANEL</p>
+<div class="container grid-custom">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12 first-block"><img src="http://placehold.it/600x405/2ecc71/fff" alt="" class="img-responsive"></div>
+    <div data-bind="if: $data.isLoaded">
+      <div data-bind="foreach: $data.container">
+        <div class="col-sm-3 col-xs-6">
+          <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster) }">
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-xs-6"><img src="http://placehold.it/300x205/9b59b6/fff" alt="" class="img-responsive"></div>
+    <div class="col-sm-3 col-xs-6"><img src="http://placehold.it/300x205/9b59b6/fff" alt="" class="img-responsive"></div>
+    <div class="col-sm-3 col-xs-6"><img src="http://placehold.it/300x205/9b59b6/fff" alt="" class="img-responsive"></div>
+    <div class="col-sm-3 col-xs-6"><img src="http://placehold.it/300x205/9b59b6/fff" alt="" class="img-responsive"></div>
+    <div class="col-sm-3 col-xs-6"><img src="http://placehold.it/300x205/9b59b6/fff" alt="" class="img-responsive"></div>
+    <div class="col-sm-3 col-xs-6"><img src="http://placehold.it/300x205/9b59b6/fff" alt="" class="img-responsive"></div>
+  </div>
+</div>
