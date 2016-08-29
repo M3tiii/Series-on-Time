@@ -1,17 +1,18 @@
 import kb from 'knockback';
 
-class Series extends Backbone.Collection {
-  constructor(...args) {
+class Series extends Backbone.Model {
+  constructor(seriesId,...args) {
     super(...args);
+    this.setQuery(seriesId);
   };
-  url(){
-    return "http://api.themoviedb.org/3/search/tv?api_key=cc4b67c52acb514bdf4931f7cedfd12b&query="+this.query;
+  url() {
+    return "http://api.themoviedb.org/3/tv/" + this.seriesId + "?&api_key=cc4b67c52acb514bdf4931f7cedfd12b";
   };
-  parse(response){
-    return response.results;
+  parse(response) {
+    return response;
   };
-  setQuery(query){
-    this.query = encodeURIComponent(query);
+  setQuery(seriesId) {
+    this.seriesId = seriesId;
   };
 }
 
