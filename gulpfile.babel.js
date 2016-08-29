@@ -79,4 +79,5 @@ gulp.task('webserver', function() {
 gulp.task('default', ['sass', 'init', 'build', 'webserver'], function () {
      gulp.watch(scss.watch, ['sass']);
      gulp.watch('app/**/*.js', ['build']);
+     gulp.watch('app/**/*.html', ['init', 'build']);
 });
