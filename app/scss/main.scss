@@ -1,2 +1,23 @@
 @import "bootstrap";
 @import "bootstrap/theme";
+
+body {
+  background-color: #111;
+  margin: 0;
+  padding: 0;
+}
+
+.img-responsive {
+  margin-bottom: 0px;
+}
+
+.grid-custom .col-sm-6,
+.grid-custom .col-xs-6,
+.grid-custom .col-xs-12,
+.grid-custom .col-sm-3 {
+  padding:5px;
+}
+
+.first-block{
+
+}
