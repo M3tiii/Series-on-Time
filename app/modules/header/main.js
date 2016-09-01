@@ -5,7 +5,7 @@ import ViewModel from './viewModel';
 
 let Header = Component ({
 	viewTemplateName: "Header",
-	viewModel: ViewModel,
+	viewModel: ViewModel(),
 	viewTemplate: {},
 });
 

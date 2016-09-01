@@ -15,25 +15,13 @@ let APP = Component ({
 	sections: [Header, Panel, Footer],
 
 	initialize: function() {
-		this.loadSections();
+		this.sections.forEach(module => {
+				this.loadSection(module);
+		});
 		this.appendTemplate();
+		Panel.init();
 	},
 
-	loadSections: function() {
-		let self = this;
-		this.sections.forEach(module => {
-			var view = {
-          name: module.viewTemplateName,
-          data: module.viewModel ? module.viewModel : null,
-      };
-			$.get("modules/" + module.viewTemplateName + "/view.html")
-				.done( data => {
-					module.viewTemplate = data;
-					module.loadTemplate();
-			  });
-			this.viewModel['section' + view.name](view);
-		})
-  },
 });
 
 export default APP;

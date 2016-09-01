@@ -5,7 +5,7 @@ import ViewModel from './viewModel';
 
 let Footer = Component ({
 	viewTemplateName: "Footer",
-	viewModel: ViewModel,
+	viewModel: ViewModel(),
 	viewTemplate: {},
 });
 

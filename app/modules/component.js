@@ -17,6 +17,20 @@ class Component {
     }
   };
 
+  loadSection(_module) {
+		let module = _module;
+		let view = {
+        name: module.viewTemplateName,
+        data: module.viewModel ? module.viewModel : null,
+    };
+		$.get("modules/" + module.viewTemplateName + "/view.html")
+			.done( data => {
+				module.viewTemplate = data;
+				module.loadTemplate();
+				this.viewModel['section' + view.name](view);
+		  });
+	};
+
   appendTemplate() {
 		$.get("modules/" + this.viewTemplateName + "/view.html")
       .done( data => {
