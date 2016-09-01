@@ -6,33 +6,30 @@ import Season from '../../collections/season';
 
 import Storage from '../../js/storage';
 
-let data = [
-	[62560, 'Mr. robot', '1-11', '/esN3gWb1P091xExLddD2nh4zmi3.jpg'],
-	[1402, 'Walking dead', '2-22', '/cCDuZqLv6jwnf3cZZq7g3uNLaIu.jpg']
-];
-
 let ViewModel = function() {
-  localStorage.removeItem('series-on-time');
-  localStorage.setItem('series-on-time', JSON.stringify(data) );
+	let self = this;
+	this.sectionModal = kb.observable(null, "sectionModal");
+	this.sectionModal({name: "app", data: null});
+  this.isLoaded = kb.observable(null, "isLoaded");
 
   this.getPosterPath = function (_poster) {
     const poster = _poster();
     const width = 'w185';
     return 'http://image.tmdb.org/t/p/' + width + poster;
-  }
+  };
 
-  this.isLoaded = kb.observable(null, "isLoaded");
+	this.openModal = function () {
+		this.sectionModal().data.show();
+	};
 
-  Storage.load(this.ready);
-  console.log(Storage.get());
+	this.storageReady = function () {
+		self.mainCollection = Storage.get();
+    self.container = kb.observableCollection(self.mainCollection, {});
+		self.isLoaded(true);
+		Storage.save();
+	};
 
-  setTimeout(() => {
-    this.mainCollection = Storage.get();
-    this.container = kb.observableCollection(this.mainCollection, {});
-
-    this.isLoaded(true);
-  }, 2000)
-
+  Storage.load(this.storageReady);
 };
 
 export default function() {
