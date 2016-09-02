@@ -5,23 +5,25 @@ import ViewModel from './viewModel';
 import Header from '../header/main';
 import Panel from '../panel/main';
 import Footer from '../footer/main';
-import {getSeries, getSeason} from '../../js/utility';
+import {
+    getSeries,
+    getSeason
+} from '../../js/utility';
 
-let APP = Component ({
-	viewTemplateName: "app",
-	viewModel: ViewModel(),
-	viewTemplate: {},
+let APP = Component({
+    templateName: "app",
+    templateView: {},
+    viewModel: ViewModel(),
 
-	sections: [Header, Panel, Footer],
+    sections: [Header, Panel, Footer],
 
-	initialize: function() {
-		this.sections.forEach(module => {
-				this.loadSection(module);
-		});
-		this.appendTemplate();
-		Panel.init();
-	},
-
+    initialize: function() {
+        this.sections.forEach(module => {
+            this.loadSection(module);
+        });
+        this.appendTemplate();
+        Panel.init();
+    },
 });
 
 export default APP;

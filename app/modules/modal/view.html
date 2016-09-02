@@ -1,29 +1,29 @@
 <div class="modal" id="myModal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-      <div class="modal-header">
-        <button type="button" class="close" data-bind="click: $data.close">&times;</button>
-        <h4 class="modal-title">Find more series</h4>
-      </div>
-
-      <div class="modal-body">
-        <p><input data-bind="value: seriesName, valueUpdate: 'input'"/></p>
-        <div data-bind="if: $data.isLoaded">
-          <div data-bind="foreach: $data.actualSearch">
-            <div data-bind="if: poster_path">
-              <div class="col-sm-3 col-xs-6">
-                <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster_path) }, click: function(){$parent.addSeries(id)}">
-                <!-- <h3 data-bind="text: name"></h3> -->
-              </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-bind="click: $data.close">&times;</button>
+                <h4 class="modal-title">Find more series</h4>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-bind="click: $data.close">Close</button>
-      </div>
+            <div class="modal-body">
+                <p><input data-bind="value: seriesName, valueUpdate: 'input'" /></p>
+                <div data-bind="if: $data.isLoaded">
+                    <div data-bind="foreach: $data.actualSearch">
+                        <div data-bind="if: poster_path">
+                            <div class="col-sm-3 col-xs-6">
+                                <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster_path) }, click: function(){$parent.addSeries(id)}">
+                                <!-- <h3 data-bind="text: name"></h3> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-bind="click: $data.close">Close</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

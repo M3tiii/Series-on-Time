@@ -1,22 +1,12 @@
 import $ from 'jquery';
 import kb from 'knockback';
 
-var emptyView = function() {
-  return {
-    name: "app",
-    data: null
-  };
-};
-
 var ViewModel = function() {
-  this.sectionHeader = kb.observable(null, "sectionHeader");
-  this.sectionHeader(emptyView());
-  this.sectionPanel = kb.observable(null, "sectionPanel");
-  this.sectionPanel(emptyView());
-  this.sectionFooter = kb.observable(null, "sectionFooter");
-  this.sectionFooter(emptyView());
+    this.Header = kb.observable(null, "Header");
+    this.Panel = kb.observable(null, "Panel");
+    this.Footer = kb.observable(null, "Footer");
 };
 
 export default function() {
-  return new ViewModel();
+    return new ViewModel();
 };

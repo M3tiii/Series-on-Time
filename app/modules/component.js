@@ -1,52 +1,52 @@
 import kb from 'knockback';
 
 class Component {
-  constructor() {
-    console.log('Create component');
-  };
-
-  loadTemplate() {
-    const name = this.viewTemplateName;
-    const tpl = this.viewTemplate;
-    if (this.viewTemplate) {
-      let $script = $("<script>", {
-        id: name,
-        type: "text/html"
-      }).text(tpl);
-      $('body').append($script);
-    }
-  };
-
-  loadSection(_module) {
-		let module = _module;
-		let view = {
-        name: module.viewTemplateName,
-        data: module.viewModel ? module.viewModel : null,
+    constructor() {
+        console.log('Create component');
     };
-		$.get("modules/" + module.viewTemplateName + "/view.html")
-			.done( data => {
-				module.viewTemplate = data;
-				module.loadTemplate();
-				this.viewModel['section' + view.name](view);
-        module.isLoaded();
-		  });
-	};
 
-  appendTemplate() {
-		$.get("modules/" + this.viewTemplateName + "/view.html")
-      .done( data => {
-        this.viewTemplate = data;
-  			this.loadTemplate();
-  			let app = kb.renderTemplate(this.viewTemplateName, this.viewModel);
-        $('body').append(app);
-      });
-  };
+    loadTemplate() {
+        const _templateName = this.templateName;
+        const _templateView = this.templateView;
+        if (this.templateView) {
+            let $element = $("<script>");
+            $element.attr('id', _templateName);
+            $element.attr('type', "text/html");
+            $element.text(_templateView);
+            $('body').append($element);
+        }
+    };
 
-  isLoaded() {
-    return false;
-  }
+    loadSection(_module) {
+        let module = _module;
+        let view = {
+            name: module.templateName,
+            data: module.viewModel ? module.viewModel : null,
+        };
+        $.get("modules/" + module.templateName + "/view.html")
+            .done(data => {
+                module.templateView = data;
+                module.loadTemplate();
+                this.viewModel[view.name](view);
+                module.isLoaded();
+            });
+    };
+
+    appendTemplate() {
+        $.get("modules/" + this.templateName + "/view.html")
+            .done(data => {
+                this.templateView = data;
+                this.loadTemplate();
+                let app = kb.renderTemplate(this.templateName, this.viewModel);
+                $('body').append(app);
+            });
+    };
+
+    isLoaded() {
+        return false;
+    }
 };
 
 export default function(prop) {
-  return _.extend(new Component(), prop);
+    return _.extend(new Component(), prop);
 };
