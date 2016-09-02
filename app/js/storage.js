@@ -14,6 +14,11 @@ function calculateDays(_toDate) {
   return Math.round((toDate.getTime() - sinceDate.getTime())/(timeValue));
 }
 
+function onErrorHandler(context, response, options) {
+     console.log('Fetch onerrorhandler');
+     console.log(context, response.responseText);
+ };
+
 export default class Movie extends Backbone.Model {
 
   constructor(id, name, days, poster) {
@@ -40,7 +45,8 @@ export default class Movie extends Backbone.Model {
     const actualEpisode = lastSeason.filter((model) => {
       return model.get('days') >= 0;
     });
-    this.set({'days':_.first(actualEpisode).get('days')});
+    const _days = actualEpisode.length ? _.first(actualEpisode).get('days') : 'expired';
+    this.set({'days': _days});
   };
 
   _calcActualEpisode() {
@@ -56,7 +62,8 @@ export default class Movie extends Backbone.Model {
     this.attributes.series.fetch({
       success: () => {
         this._fetchLastSeason();
-      }
+      },
+      error: onErrorHandler
     });
   };
 
@@ -71,7 +78,8 @@ export default class Movie extends Backbone.Model {
         Movie.modelsLoaded++;
         if(Movie.modelsLoaded === Movie.modelsCount)
           Movie.callReady();
-      }
+      },
+      error: () => {console.log(this)}
     });
   };
 
@@ -82,7 +90,8 @@ export default class Movie extends Backbone.Model {
       _season.fetch({
         success: () => {
           // #TODO callback
-        }
+        },
+        error: onErrorHandler
       });
       this.attributes.season[i] = _season;
     }
@@ -93,8 +102,12 @@ export default class Movie extends Backbone.Model {
     return storage;
   };
 
-  static add(id, name, days, poster) {
+  static add(id, name = '', days = '', poster = '') {
     _movieCollection.add(new Movie(id, name, days, poster));
+  };
+
+  static remove(_id) {
+    _movieCollection.remove([{id: _id }]);
   };
 
   static get() {
@@ -106,11 +119,13 @@ export default class Movie extends Backbone.Model {
     Movie.modelsLoaded = 0;
     _movieCollection.reset();
     const _data = JSON.parse(localStorage.getItem(_key));
-    Movie.modelsCount = _data.length;
-    console.log(_data);
-    _data.forEach((prop) => {
-      _movieCollection.add( new Movie(...prop) );
-    });
+    if(_data && _data.length) {
+      Movie.modelsCount = _data.length;
+      _data.forEach((prop) => {
+        _movieCollection.add( new Movie(...prop) );
+      });
+    } else
+      Movie.callReady();
   };
 
   static save() {

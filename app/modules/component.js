@@ -28,6 +28,7 @@ class Component {
 				module.viewTemplate = data;
 				module.loadTemplate();
 				this.viewModel['section' + view.name](view);
+        module.isLoaded();
 		  });
 	};
 
@@ -40,6 +41,10 @@ class Component {
         $('body').append(app);
       });
   };
+
+  isLoaded() {
+    return false;
+  }
 };
 
 export default function(prop) {

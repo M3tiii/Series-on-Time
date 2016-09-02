@@ -12,6 +12,9 @@ let Panel = Component ({
 	init: function() {
 		this.loadSection(this.modal);
 	},
+	isLoaded: function() {
+		
+	}
 });
 
 export default Panel;
