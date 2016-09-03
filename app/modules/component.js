@@ -28,7 +28,8 @@ class Component {
                 module.templateView = data;
                 module.loadTemplate();
                 this.viewModel[view.name](view);
-                module.isLoaded();
+                if (_.isFunction(module.isLoaded))
+                    module.isLoaded();
             });
     };
 

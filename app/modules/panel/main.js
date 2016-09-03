@@ -10,10 +10,15 @@ let Panel = Component({
     viewModel: ViewModel(),
     modal: Modal,
     init: function() {
-        this.loadSection(this.modal);
+        this.viewModel.viewCall();
     },
     isLoaded: function() {
-
+        this.modal.isLoaded = this.modalReady;
+        this.modal.viewModel.storage = this.viewModel.storage;
+        this.loadSection(this.modal);
+    },
+    modalReady: function(self) {
+        Panel.init();
     }
 });
 

@@ -8,54 +8,65 @@ import Storage from '../../js/storage';
 
 let ViewModel = function() {
     let self = this;
+    this.storage = Storage;
     this.Modal = kb.observable(null, "Modal");
     this.Modal({
         name: "app",
         data: null
     });
     this.isLoaded = kb.observable(null, "isLoaded");
-    this.removed = kb.observableCollection(null, "removed");
-    // localStorage.clear();
+    this.isRemoved = kb.observable(null, "isRemoved");
+    this.removed = [];
 
-    this.getPosterPath = function(_poster) {
+    this.getPosterPath = function(_poster, _name) {
         const poster = _poster();
-        const width = 'w185';
+        const name = _name();
+        const width = '185';
         if (poster)
-            return 'http://image.tmdb.org/t/p/' + width + poster;
+            return 'http://image.tmdb.org/t/p/w' + width + poster;
+        else
+            return 'http://placehold.it/157.5x' + '236' + '/222/fff?text=' + name;
     };
 
     this.openModal = function() {
         this.Modal().data.show();
     };
 
-    this.removeSeries = function(context, ev, _id) {
+    this.removeSeries = function(context, ev, _id, model) {
         const id = _id();
-        Storage.remove(id);
-        Storage.save();
-        this.removed().push(id);
+        this.storage.remove(id);
+        this.removed.push([model.id(), model.name(), model.airDate(), model.poster()]);
+        this.isRemoved(this.removed.length);
     };
 
     this.restoreRemoved = function() {
-        if (this.removed().length) {
-            this.removed().forEach((series) => {
-                Storage.add(series)
-            });
-            Storage.save();
-            this.removed([]);
+        const lastRemoved = this.removed.pop();
+        this.isRemoved(this.removed.length);
+        if (lastRemoved) {
+            this.storage.add(...lastRemoved);
         }
     };
 
-    this.storageReady = function() {
-        setTimeout(() => { // TODO replace by callback ready
-            self.Modal().data.storage = Storage;
-            self.mainCollection = Storage.get();
-            self.container = kb.observableCollection(self.mainCollection, {});
-            self.isLoaded(true);
-            Storage.save();
-        }, 200);
+    this.viewModelReady = function() {
+        if (this.storageReady && this.viewReady) {
+            console.log('Storage ready');
+            this.mainCollection = this.storage.get();
+            this.container = kb.observableCollection(this.mainCollection, {});
+            this.isLoaded(true);
+        }
     };
 
-    Storage.load(this.storageReady);
+    this.storageCall = function() {
+        self.storageReady = true;
+        self.viewModelReady();
+    };
+
+    this.viewCall = function() {
+        self.viewReady = true;
+        self.viewModelReady();
+    };
+
+    this.storage.load(this.storageCall);
 };
 
 export default function() {

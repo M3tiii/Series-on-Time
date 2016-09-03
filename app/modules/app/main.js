@@ -22,7 +22,6 @@ let APP = Component({
             this.loadSection(module);
         });
         this.appendTemplate();
-        Panel.init();
     },
 });
 

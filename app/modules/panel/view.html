@@ -1,4 +1,4 @@
-<div class="container grid-custom">
+<div class="container">
 
     <div class="row">
         <div class="col-sm-6 col-xs-12 first-block"><img src="http://placehold.it/600x405/2ecc71/fff" alt="" class="img-responsive"></div>
@@ -7,8 +7,10 @@
             <div data-bind="foreach: $data.container">
                 <div class="col-sm-3 col-xs-6">
                     <div class="img-container">
-                        <h2 data-bind="text: days"></h2>
-                        <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster) }, click: function(ev, aa){$parent.removeSeries(ev, aa, id)}">
+                        <div data-bind="if: isActual">
+                            <h2 data-bind="text: days"></h2>
+                        </div>
+                        <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster, name) }, click: function(ev, aa){$parent.removeSeries(ev, aa, id, this)}">
                     </div>
                 </div>
             </div>
@@ -16,7 +18,7 @@
             <div class="col-sm-3 col-xs-6" data-bind="click: $data.openModal">
                 <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span>
             </div>
-            <div class="col-sm-3 col-xs-6" data-bind="if: $data.removed(), click: $data.restoreRemoved">
+            <div class="col-sm-3 col-xs-6" data-bind="if: $data.isRemoved, click: $data.restoreRemoved">
                 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
             </div>
         </div>

@@ -25,7 +25,6 @@ let ViewModel = function() {
     this.addSeries = function(_id) {
         const id = _id();
         this.storage.add(id);
-        this.storage.save();
     };
     this.getPosterPath = function(_poster) {
         const poster = _poster();
