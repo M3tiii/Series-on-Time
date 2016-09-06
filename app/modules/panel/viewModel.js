@@ -15,15 +15,14 @@ let ViewModel = function() {
         data: null
     });
     this.isLoaded = kb.observable(null, "isLoaded");
-    this.isRemoved = kb.observable(null, "isRemoved");
     this.removed = [];
-
-    this.getPosterPath = function(_poster, _name) {
+    // localStorage.clear();
+    this.getPosterPath = function(_poster, _name, _width = 'w185') {
         const poster = _poster();
         const name = _name();
-        const width = '185';
+        const width = _width;
         if (poster)
-            return 'http://image.tmdb.org/t/p/w' + width + poster;
+            return 'http://image.tmdb.org/t/p/' + width + poster;
         else
             return 'http://placehold.it/157.5x' + '236' + '/222/fff?text=' + name;
     };
@@ -36,12 +35,13 @@ let ViewModel = function() {
         const id = _id();
         this.storage.remove(id);
         this.removed.push([model.id(), model.name(), model.airDate(), model.poster()]);
-        this.isRemoved(this.removed.length);
+        this.restoreButton.show();
     };
 
-    this.restoreRemoved = function() {
+    this.restoreRemoved = function(button) {
         const lastRemoved = this.removed.pop();
-        this.isRemoved(this.removed.length);
+        if (!this.removed.length)
+            this.restoreButton.hide();
         if (lastRemoved) {
             this.storage.add(...lastRemoved);
         }
@@ -50,8 +50,21 @@ let ViewModel = function() {
     this.viewModelReady = function() {
         if (this.storageReady && this.viewReady) {
             console.log('Storage ready');
+            this.addButton = $('.add-series');
+            this.restoreButton = $('.restore-series');
+            this.addButton.click(() => {
+                this.openModal();
+            });
+            this.restoreButton.click(() => {
+                this.restoreRemoved();
+            });
+
             this.mainCollection = this.storage.get();
             this.container = kb.observableCollection(this.mainCollection, {});
+
+            this.introCollection = this.mainCollection.first();
+            this.introContainer = kb.observableCollection([this.introCollection], {})
+                // console.log(this.mainCollection());
             this.isLoaded(true);
         }
     };
