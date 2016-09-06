@@ -3,7 +3,10 @@ import Series from '../collections/series';
 import Season from '../collections/season';
 
 let _movieCollection = new Backbone.Collection();
+let _notFetched = [];
 const _key = 'series-on-time';
+
+let attributes = ['id', 'name', 'airDate', 'poster', 'backdrop', 'episodeName'];
 
 function calculateDays(_toDate) {
     const toDate = new Date(_toDate);
@@ -14,25 +17,34 @@ function calculateDays(_toDate) {
     return Math.round((toDate.getTime() - sinceDate.getTime()) / (timeValue));
 }
 
-function onErrorHandler(context, response, options) {
+function onErrorHandler(movie, response) {
     console.log('Fetch onerrorhandler');
-    console.log(context, response.responseText);
+    console.log(movie, response.responseText);
+    if (response.responseJSON.status_code === 25) {
+        Movie.modelsFailed++;
+        _notFetched.push(movie);
+        Movie.resolveNotFetched();
+    }
+
 };
 
 export default class Movie extends Backbone.Model {
-    constructor(id, name, airDate, poster) {
+    constructor(id, ...args) {
         super();
         self = this.attributes;
         self.id = id;
-        self.name = name;
-        self.airDate = airDate;
-        self.poster = poster;
+        args.forEach((value, id) => {
+            const attrName = attributes[id + 1];
+            self[attrName] = value || '';
+        });
         self.isActual = false;
-        if (!name || !poster || !airDate || calculateDays(airDate) < 0) {
+        self.isIntro = false;
+        if (self.isIntro || !self.airDate || calculateDays(self.airDate) < 0) {
             console.log('Fetching series: ', this);
             this._fetchSeries();
         } else {
-            self.days = calculateDays(airDate);
+            // console.log('Without fetch: ', this);
+            self.days = calculateDays(self.airDate);
             this._afterFetch();
         }
     };
@@ -43,12 +55,9 @@ export default class Movie extends Backbone.Model {
             'isActual': true
         });
         Movie.modelsLoaded++;
-        // console.log('afterFetch', Movie.modelsLoaded, Movie.modelsToLoad);
-        if (Movie.modelsLoaded === Movie.modelsToLoad)
-            Movie.callReady(); // TODO call too on some error
-        if (Movie.modelsLoaded >= Movie.modelsToLoad) {
-            Movie.save();
+        if (Movie.modelsLoaded + Movie.modelsFailed >= Movie.modelsToLoad) {
             _movieCollection.sort(_movieCollection.comparator);
+            Movie.save();
         }
     };
 
@@ -57,8 +66,7 @@ export default class Movie extends Backbone.Model {
     };
 
     _setActualEpisode() {
-        let _days = null;
-        let _airDate = null;
+        let _days, _airDate, _overview, _episodeName, _seasonNumber, _episodeNumber = null;
         const lastSeason = this.get('lastSeason');
         const actualEpisode = lastSeason.filter((model) => {
             return model.get('days') >= 0;
@@ -66,10 +74,18 @@ export default class Movie extends Backbone.Model {
         if (actualEpisode.length) {
             _days = _.first(actualEpisode).get('days');
             _airDate = _.first(actualEpisode).get('air_date');
+            _overview = _.first(actualEpisode).get('_overview');
+            _episodeName = _.first(actualEpisode).get('name');
+            _seasonNumber = _.first(actualEpisode).get('season_number');
+            _episodeNumber = _.first(actualEpisode).get('episode_number');
         }
         this.set({
             'days': _days,
-            'airDate': _airDate
+            'airDate': _airDate,
+            'overview': _overview,
+            'episodeName': _episodeName,
+            'seasonNumber': _seasonNumber,
+            'episodeNumber': _episodeNumber,
         });
     };
 
@@ -89,13 +105,16 @@ export default class Movie extends Backbone.Model {
             success: () => {
                 this.set({
                     'name': this.attributes.series.get('name'),
-                    'poster': this.attributes.series.get('poster_path')
+                    'poster': this.attributes.series.get('poster_path'),
+                    'backdrop': this.attributes.series.get('backdrop_path')
                 })
                 const numberOfSeasons = this.get('series').get('number_of_seasons');
                 if (numberOfSeasons > 0)
                     this._fetchLastSeason(numberOfSeasons);
             },
-            error: onErrorHandler
+            error: (context, response) => {
+                onErrorHandler(this, response);
+            }
         });
     };
 
@@ -107,7 +126,9 @@ export default class Movie extends Backbone.Model {
                 this._setActualEpisode();
                 this._afterFetch();
             },
-            error: onErrorHandler
+            error: (context, response) => {
+                onErrorHandler(this, response);
+            }
         });
 
     };
@@ -120,19 +141,35 @@ export default class Movie extends Backbone.Model {
                 success: () => {
                     // #TODO callback
                 },
-                error: onErrorHandler
+                error: (context, response) => {
+                    onErrorHandler(this, response);
+                }
             });
             this.attributes.season[i] = _season;
         }
     };
 
     _getJSON() {
-        const storage = [this.get('id'), this.get('name'), this.get('airDate'), this.get('poster')];
+        const storage = [];
+        attributes.forEach((property) => {
+            storage.push(this.get(property));
+        });
         return storage;
     };
 
-    static add(id, name = '', airDate = '', poster = '') {
-        new Movie(id, name, airDate, poster);
+    static resolveNotFetched() {
+        console.log(_notFetched);
+        let movie = _notFetched.shift();
+        if (movie) {
+            setTimeout(() => {
+                console.log('Refetch: ', movie);
+                movie._fetchSeries();
+            }, 2000);
+        }
+    };
+
+    static add(id, ...args) {
+        new Movie(id, ...args);
     };
 
     static remove(_id) {
@@ -150,8 +187,10 @@ export default class Movie extends Backbone.Model {
         Movie.callReady = callback; //# TODO !!!
         Movie.modelsLoaded = 0;
         Movie.modelsToLoad = 0;
+        Movie.modelsFailed = 0;
         _movieCollection.reset();
         _movieCollection.comparator = function(model) {
+            // console.log(!_.isNumber(model.get('days')), model.get('days'));
             return model.get('days');
         };
         const _data = JSON.parse(localStorage.getItem(_key));
@@ -161,8 +200,8 @@ export default class Movie extends Backbone.Model {
             _data.forEach((prop) => {
                 Movie.add(...prop);
             });
-        } else
-            Movie.callReady();
+        }
+        Movie.callReady();
     };
 
     static save() {
