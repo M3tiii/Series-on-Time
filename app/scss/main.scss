@@ -1,35 +1,118 @@
 @import "bootstrap";
 @import "bootstrap/theme";
+@import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
 
 body {
-  background-color: #111;
+  background-color: #white;
   margin: 0;
   padding: 0;
 }
 
-.img-responsive {
-  margin-bottom: 0px;
-}
-
-.grid-custom .col-sm-6,
-.grid-custom .col-xs-6,
-.grid-custom .col-xs-12,
-.grid-custom .col-sm-3 {
-  padding:5px;
-}
-
-.first-block{
-
-}
-
 .img-container {
-   position: relative;
-   width: 100%; /* for IE 6 */
+  position: relative;
+  width: 100%; /* for IE 6 */
+  max-height: 300px;
+  max-width: 185px;
+  width: 185px;
+  height: 270px;
 }
 
-h2 {
-   position: absolute;
-   top: 200px;
-   left: 0;
-   width: 100%;
+.days-left {
+  color: white;
+  position: absolute;
+  top: -20px;
+  width: 100%;
+  text-align: center;
+  font-size: 10em;
+  opacity: 0.65;
+  text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.3) -1px -2px;
+}
+
+.modal {
+  padding-top: 40px;
+}
+
+header {
+  text-align: center;
+  color: #fff;
+  background: #white;
+  position: fixed;
+  width:100%;
+  z-index: 1;
+  height: 90%;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+}
+.content-wrapper{
+  background-color: white;
+  top: 90%;
+  min-height: 12%;
+  position:absolute;
+  z-index: 2;
+  width: 100%;
+}
+
+.navbar .navbar-title {
+  letter-spacing: 2px;
+  font-weight: 450;
+}
+
+section {
+  padding: 100px 0;
+  width: 100%;
+}
+
+section .img-responsive {
+  width: 100%;
+}
+
+section .col-sm-3, .col-xs-6 {
+  width: 185px;
+  overflow: hidden;
+  padding: 2px;
+}
+
+section .row {
+  width: 100%;
+  margin: 0 auto;
+}
+
+header .img-responsive {
+  margin-bottom: 0px;
+  width: 100%;
+}
+
+header .intro-content {
+  padding-top: 50px;
+  padding-bottom: 10px;
+}
+
+header .intro-text {
+  position: absolute;
+  top: 200px;
+  left: 0;
+  width: 100%;
+}
+
+header .intro-text .name {
+  display: block;
+  text-transform: uppercase;
+  font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 2em;
+  font-weight: 700;
+}
+
+header .intro-text .overview {
+  font-size: 1.25em;
+  font-weight: 350;
+}
+
+hr.line-light {
+  margin: 25px auto 30px;
+  padding: 0;
+  max-width: 250px;
+  border: 0;
+  border-top: solid 5px;
+  text-align: center;
 }
