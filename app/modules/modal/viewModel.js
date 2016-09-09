@@ -14,9 +14,15 @@ let ViewModel = function() {
     });
     this.hide = function() {
         $("#myModal").hide();
+        $('body').css({
+            overflow: ''
+        });
     };
     this.show = function() {
         $("#myModal").show();
+        $('body').css({
+            overflow: 'hidden'
+        });
     };
     this.close = function() {
         this.seriesName("");
@@ -25,6 +31,9 @@ let ViewModel = function() {
     this.addSeries = function(_id) {
         const id = _id();
         this.storage.add(id);
+        $('html, body').animate({
+            scrollTop: $(".content-wrapper").offset().top
+        }, 2000);
     };
     this.getPosterPath = function(_poster) {
         const poster = _poster();
