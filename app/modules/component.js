@@ -2,7 +2,7 @@ import kb from 'knockback';
 
 class Component {
     constructor() {
-        console.log('Create component');
+        console.log('Creating component');
     };
 
     loadTemplate() {
@@ -17,7 +17,7 @@ class Component {
         }
     };
 
-    loadSection(_module) {
+    loadSection(_module, success) {
         let module = _module;
         let view = {
             name: module.templateName,
@@ -30,16 +30,18 @@ class Component {
                 this.viewModel[view.name](view);
                 if (_.isFunction(module.isLoaded))
                     module.isLoaded();
+                if (success) success();
             });
     };
 
-    appendTemplate() {
+    appendTemplate(success) {
         $.get("modules/" + this.templateName + "/view.html")
             .done(data => {
                 this.templateView = data;
                 this.loadTemplate();
                 let app = kb.renderTemplate(this.templateName, this.viewModel);
                 $('body').append(app);
+                if (success) success();
             });
     };
 
