@@ -18,7 +18,7 @@ let Panel = Component({
         this.loadSection(this.modal);
     },
     modalReady: function(self) {
-        Panel.init();
+        // Panel.init();
     }
 });
 

@@ -15,6 +15,7 @@ let ViewModel = function() {
         data: null
     });
     this.isLoaded = kb.observable(null, "isLoaded");
+    this.introLoaded = kb.observable(null, "introLoaded");
     this.removed = [];
     // localStorage.clear();
     this.getPosterPath = function(_poster, _name, _width = 'w185') {
@@ -31,10 +32,10 @@ let ViewModel = function() {
         this.Modal().data.show();
     };
 
-    this.removeSeries = function(context, ev, _id, model) {
-        const id = _id();
+    this.removeSeries = function(model, context, ev) {
+        const id = model.id();
+        this.removed.push([model.id(), model.name(), model.airDate(), model.poster(), model.backdrop(), model.episodeName()]);
         this.storage.remove(id);
-        this.removed.push([model.id(), model.name(), model.airDate(), model.poster()]);
         this.restoreButton.show();
     };
 
@@ -50,24 +51,47 @@ let ViewModel = function() {
     this.viewModelReady = function() {
         if (this.storageReady && this.viewReady) {
             console.log('Storage ready');
+
+            this.mainCollection = this.storage.get();
+            this.container = kb.observableCollection(this.mainCollection, {});
+
             this.addButton = $('.add-series');
             this.restoreButton = $('.restore-series');
+            this.clearButton = $('.clear-series');
             this.addButton.click(() => {
                 this.openModal();
             });
             this.restoreButton.click(() => {
                 this.restoreRemoved();
             });
+            this.clearButton.click(() => {
+                this.removed = [];
+                this.mainCollection.reset();
+                localStorage.clear();
+            });
 
-            this.mainCollection = this.storage.get();
-            this.container = kb.observableCollection(this.mainCollection, {});
+            this.introCollection = new Backbone.Collection();
+            this.introContainer = kb.observableCollection(this.introCollection, {});
+            this.setIntro();
+            this.container.subscribe(() => {
+                this.setIntro();
+            })
 
-            this.introCollection = this.mainCollection.first();
-            this.introContainer = kb.observableCollection([this.introCollection], {})
-                // console.log(this.mainCollection());
             this.isLoaded(true);
         }
     };
+
+    this.setIntro = function() {
+        let model = this.mainCollection.first();
+        if (model && model.get('days') >= 0) {
+            this.introCollection.reset();
+            this.introCollection.add(model);
+            this.introLoaded(true);
+        } else {
+            this.introCollection.reset();
+            this.introLoaded(false);
+        }
+    }
 
     this.storageCall = function() {
         self.storageReady = true;

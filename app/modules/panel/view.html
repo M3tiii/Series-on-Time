@@ -2,19 +2,37 @@
     <div class="intro-content">
         <div class="row">
             <div data-bind="if: $data.isLoaded">
-                <div data-bind="foreach: $data.introContainer">
-                    <img class="img-responsive" alt="" data-bind="attr: { src: $parent.getPosterPath(backdrop, name, 'w1280') }">
-                    <div class="intro-text">
-                        <span class="name" data-bind="text: name()"></span>
-                        <hr class="line-light">
-                        <p class="overview" data-bind="text: episodeName()"></p>
-                        <!-- + ' s' + seasonNumber() + 'e' + episodeNumber() -->
-                        <p class="overview" data-bind="text: airDate"></p>
+                <div class="intro-start" data-bind="ifnot: $data.introLoaded">
+                    <img class="img-responsive" alt="" src="assets/bc.jpg">
+                    <div class="intro-text" data-bind="ifnot: $data.container().length">
+                        <p class="overview">Add your favorite show and keep eye on the new episodes</p>
+                        <p class="overview">Without registration!</p>
+                        <p class="overview">
+                            Click
+                            <a><span class="glyphicon glyphicon glyphicon-plus add-series" aria-hidden="true"></span></a> to add new series
+                        </p>
+                    </div>
+                    <div class="intro-text" data-bind="if: $data.container().length">
+                        <p class="overview">We are sorry</p>
+                        <p class="overview">Currently, your series does not emit new episodes</p>
+                    </div>
+                </div>
+                <div>
+                    <div data-bind="if: $data.introLoaded">
+                        <div data-bind="foreach: $data.introContainer">
+                            <img class="img-responsive" alt="" data-bind="attr: { src: $parent.getPosterPath(backdrop, name, 'w1280') }">
+                            <div class="intro-text">
+                                <span class="name" data-bind="text: name"></span>
+                                <hr class="line-light">
+                                <p class="overview" data-bind="text: episodeName"></p>
+                                <!-- + ' s' + seasonNumber() + 'e' + episodeNumber() -->
+                                <p class="overview" data-bind="text: airDate"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </header>
 <div class="content-wrapper">
     <section class="primary">
@@ -24,10 +42,16 @@
                     <div data-bind="foreach: $data.container">
                         <div class="col-sm-3 col-xs-6">
                             <div class="img-container">
-                                <div data-bind="if: isActual">
-                                    <h2 class="days-left" data-bind="text: days"></h2>
+                                <div class="hovereffect">
+                                    <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster, name) }">
+                                    <div data-bind="if: isActual">
+                                        <h1 class="days-left" data-bind="text: days"></h1>
+                                    </div>
+                                    <div class="overlay">
+                                        <h2 data-bind="text: name"></h2>
+                                        <a class="info" data-bind="click: function(context, event){$parent.removeSeries(this, context, event)}">Remove</a>
+                                    </div>
                                 </div>
-                                <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster, name) }, click: function(ev, aa){$parent.removeSeries(ev, aa, id, this)}">
                             </div>
                         </div>
                     </div>
