@@ -15,7 +15,7 @@ function calculateDays(_toDate) {
     sinceDate.setHours(0, 0, 0, 0);
     toDate.setHours(0, 0, 0, 0);
     return Math.round((toDate.getTime() - sinceDate.getTime()) / (timeValue));
-}
+};
 
 function onErrorHandler(movie, response) {
     console.log('Fetch onerrorhandler');
@@ -158,7 +158,6 @@ export default class Movie extends Backbone.Model {
     };
 
     static resolveNotFetched() {
-        console.log(_notFetched);
         let movie = _notFetched.shift();
         if (movie) {
             setTimeout(() => {
@@ -194,7 +193,6 @@ export default class Movie extends Backbone.Model {
             return model.get('days');
         };
         const _data = JSON.parse(localStorage.getItem(_key));
-        // console.log(_data);
         if (_data && _data.length) {
             Movie.modelsToLoad = _data.length;
             _data.forEach((prop) => {
