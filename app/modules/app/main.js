@@ -18,21 +18,22 @@ let APP = Component({
     sections: [Header, Panel, Footer],
 
     initialize: function() {
-        this.sectionsLoaded = 0;
-        this.sections.forEach(module => {
-            this.loadSection(module, () => {
-                this.afterSections()
+        this.loadSection(Header).then(() => {
+            this.loadSection(Footer).then(() => {
+                this.loadSection(Panel).then(() => {
+                    this.afterSections();
+                });
             });
         });
     },
 
     afterSections: function() {
-        this.sectionsLoaded++;
-        if (this.sectionsLoaded === this.sections.length)
-            this.appendTemplate(this.afterTemplate);
+        console.log('Append template');
+        this.appendTemplate(this.afterTemplate);
     },
 
     afterTemplate: function() {
+        console.log('Panel init');
         Panel.init();
     }
 });

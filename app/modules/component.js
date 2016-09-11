@@ -1,9 +1,7 @@
 import kb from 'knockback';
 
 class Component {
-    constructor() {
-        console.log('Creating component');
-    };
+    constructor() {};
 
     loadTemplate() {
         const _templateName = this.templateName;
@@ -17,21 +15,25 @@ class Component {
         }
     };
 
-    loadSection(_module, success) {
-        let module = _module;
-        let view = {
-            name: module.templateName,
-            data: module.viewModel ? module.viewModel : null,
-        };
-        $.get("modules/" + module.templateName + "/view.html")
-            .done(data => {
-                module.templateView = data;
-                module.loadTemplate();
-                this.viewModel[view.name](view);
-                if (_.isFunction(module.isLoaded))
-                    module.isLoaded();
-                if (success) success();
-            });
+    loadSection(_module) {
+        return new Promise((resolve, reject) => {
+            let module = _module;
+            let view = {
+                name: module.templateName,
+                data: module.viewModel ? module.viewModel : null,
+            };
+            $.get("modules/" + module.templateName + "/view.html")
+                .done(data => {
+                    console.log('Loaded component: ' + module.templateName);
+                    module.templateView = data;
+                    module.loadTemplate();
+                    this.viewModel[view.name](view);
+                    if (_.isFunction(module.isLoaded))
+                        module.isLoaded();
+                    resolve(module.templateName);
+                });
+        });
+
     };
 
     appendTemplate(success) {
@@ -52,4 +54,4 @@ class Component {
 
 export default function(prop) {
     return _.extend(new Component(), prop);
-};
+};;
