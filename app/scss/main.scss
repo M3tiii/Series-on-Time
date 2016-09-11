@@ -21,17 +21,6 @@ a:hover {
   height: 270px;
 }
 
-.days-left {
-  color: white;
-  position: absolute;
-  top: -20px;
-  width: 100%;
-  text-align: center;
-  font-size: 10em;
-  opacity: 0.65;
-  text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.3) -1px -2px;
-}
-
 .modal {
   padding-top: 40px;
 }
@@ -41,8 +30,132 @@ a:hover {
     max-height: 420px;
     overflow-y: auto;
 }
+
 .modal .modal-search {
     margin-left: 10px;
+}
+
+.modal .modal-box {
+  overflow: hidden;
+  padding: 2px;
+}
+
+.modal .modal-box img {
+  max-height: 272px;
+  width: 185px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+header {
+  text-align: center;
+  color: #fff;
+  background: #white;
+  position: fixed;
+  width:100%;
+  z-index: 1;
+  height: 90%;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+}
+
+.content-wrapper{
+  background-color: white;
+  top: 90%;
+  min-height: 12%;
+  position:absolute;
+  z-index: 2;
+  width: 100%;
+}
+
+.navbar .navbar-title {
+  letter-spacing: 2px;
+  font-weight: 450;
+}
+
+section {
+  padding: 100px 0;
+  width: 100%;
+  background-color: #f9f9f9;
+  border-top: 3px solid lightgrey;
+}
+
+section .img-responsive {
+  width: 100%;
+}
+
+section .content-box {
+  width: 185px;
+  height: 272px;
+  overflow: hidden;
+  padding: 2px;
+}
+
+section .row {
+  width: 100%;
+  margin: 0 auto;
+}
+
+section .days-left {
+  color: white;
+  position: absolute;
+  top: -20px;
+  width: 100%;
+  text-align: center;
+  font-size: 10em;
+  opacity: 0.75;
+  text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.3) -1px -2px;
+
+}
+
+header .img-responsive {
+  margin-bottom: 0px;
+  width: 100%;
+}
+
+header .intro-content {
+  padding-top: 50px;
+  padding-bottom: 10px;
+}
+
+header .intro-text {
+  position: absolute;
+  top: 200px;
+  left: 0;
+  width: 100%;
+  text-shadow:
+     -1px -1px 0px #000,
+      0px -1px 0px #000,
+      1px -1px 0px #000,
+     -1px  0px 0px #000,
+      1px  0px 0px #000,
+     -1px  1px 0px #000,
+      0px  1px 0px #000,
+      1px  1px 0px #000;
+}
+
+header .intro-text .name {
+  display: block;
+  text-transform: uppercase;
+  font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 2em;
+  font-weight: 700;
+}
+
+header .intro-text .overview {
+  font-size: 1.25em;
+  font-weight: 350;
+}
+
+hr.line-light {
+  margin: 25px auto 30px;
+  padding: 0;
+  max-width: 250px;
+  border: 0;
+  border-top: solid 5px;
+  text-align: center;
 }
 
 .hovereffect {
@@ -105,6 +218,10 @@ a:hover {
   padding:7px 14px;
 }
 
+.hovereffect a.home {
+    padding:14px 14px; //#TODO
+}
+
 .hovereffect a.info:hover {
   box-shadow:0 0 5px #fff;
 }
@@ -131,93 +248,4 @@ a:hover {
 .hovereffect:hover a.info {
   -webkit-transition-delay:.2s;
   transition-delay:.2s;
-}
-
-header {
-  text-align: center;
-  color: #fff;
-  background: #white;
-  position: fixed;
-  width:100%;
-  z-index: 1;
-  height: 90%;
-  overflow: hidden;
-  top: 0;
-  left: 0;
-}
-
-.content-wrapper{
-  background-color: white;
-  top: 90%;
-  min-height: 12%;
-  position:absolute;
-  z-index: 2;
-  width: 100%;
-}
-
-.navbar .navbar-title {
-  letter-spacing: 2px;
-  font-weight: 450;
-}
-
-section {
-  padding: 100px 0;
-  width: 100%;
-  background-color: #f9f9f9;
-  border-top: 3px solid lightgrey;
-}
-
-section .img-responsive {
-  width: 100%;
-}
-
-section .col-sm-3, .col-xs-6 {
-  width: 185px;
-  height: 272px;
-  overflow: hidden;
-  padding: 2px;
-}
-
-section .row {
-  width: 100%;
-  margin: 0 auto;
-}
-
-header .img-responsive {
-  margin-bottom: 0px;
-  width: 100%;
-}
-
-header .intro-content {
-  padding-top: 50px;
-  padding-bottom: 10px;
-}
-
-header .intro-text {
-  position: absolute;
-  top: 200px;
-  left: 0;
-  width: 100%;
-}
-
-header .intro-text .name {
-  display: block;
-  text-transform: uppercase;
-  font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 2em;
-  font-weight: 700;
-}
-
-header .intro-text .overview {
-  font-size: 1.25em;
-  font-weight: 350;
-}
-
-hr.line-light {
-  margin: 25px auto 30px;
-  padding: 0;
-  max-width: 250px;
-  border: 0;
-  border-top: solid 5px;
-  text-align: center;
 }
