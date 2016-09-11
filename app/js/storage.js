@@ -6,7 +6,7 @@ let _movieCollection = new Backbone.Collection();
 let _notFetched = [];
 const _key = 'series-on-time';
 
-let attributes = ['id', 'name', 'airDate', 'poster', 'backdrop', 'episodeName'];
+let attributes = ['id', 'name', 'airDate', 'poster', 'backdrop', 'episodeName', 'homepage'];
 
 function calculateDays(_toDate) {
     const toDate = new Date(_toDate);
@@ -39,7 +39,7 @@ export default class Movie extends Backbone.Model {
         });
         self.isActual = false;
         self.isIntro = false;
-        if (self.isIntro || !self.airDate || calculateDays(self.airDate) < 0) {
+        if (self.isIntro || !self.airDate || !self.homepage || calculateDays(self.airDate) < 0) {
             console.log('Fetching series: ', this);
             this._fetchSeries();
         } else {
@@ -106,7 +106,8 @@ export default class Movie extends Backbone.Model {
                 this.set({
                     'name': this.attributes.series.get('name'),
                     'poster': this.attributes.series.get('poster_path'),
-                    'backdrop': this.attributes.series.get('backdrop_path')
+                    'backdrop': this.attributes.series.get('backdrop_path'),
+                    'homepage': this.attributes.series.get('homepage')
                 })
                 const numberOfSeasons = this.get('series').get('number_of_seasons');
                 if (numberOfSeasons > 0)
