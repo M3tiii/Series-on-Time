@@ -12,14 +12,13 @@
                     <div data-bind="if: $data.isLoaded">
                         <div data-bind="foreach: $data.actualSearch">
                             <div data-bind="if: poster_path">
-                                <div class="col-sm-3 col-xs-6">
+                                <div class="col-sm-4 col-xs-6 modal-box">
                                     <div class="hovereffect">
                                         <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster_path) }">
                                         <div class="overlay">
                                             <h2 data-bind="text: name"></h2>
-                                            <a class="info" data-bind="click: function(){$parent.addSeries(id)}">Add</a>
+                                            <a class="info" data-bind="text: saved() ? 'ADDED' : 'ADD', click: function(){$parent.addSeries(id, this)}"></a>
                                         </div>
-                                        <!-- <h3 data-bind="text: name"></h3> -->
                                     </div>
                                 </div>
                             </div>
