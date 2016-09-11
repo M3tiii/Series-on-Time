@@ -17,7 +17,7 @@ let ViewModel = function() {
     this.isLoaded = kb.observable(null, "isLoaded");
     this.introLoaded = kb.observable(null, "introLoaded");
     this.removed = [];
-    // localStorage.clear();
+
     this.getPosterPath = function(_poster, _name, _width = 'w185') {
         const poster = _poster();
         const name = _name();
@@ -50,34 +50,39 @@ let ViewModel = function() {
 
     this.viewModelReady = function() {
         if (this.storageReady && this.viewReady) {
-            console.log('Storage ready');
+            setTimeout(() => {
+                console.log('Storage ready');
 
-            this.mainCollection = this.storage.get();
-            this.container = kb.observableCollection(this.mainCollection, {});
+                this.mainCollection = this.storage.get();
+                this.container = kb.observableCollection(this.mainCollection, {});
 
-            this.addButton = $('.add-series');
-            this.restoreButton = $('.restore-series');
-            this.clearButton = $('.clear-series');
-            this.addButton.click(() => {
-                this.openModal();
-            });
-            this.restoreButton.click(() => {
-                this.restoreRemoved();
-            });
-            this.clearButton.click(() => {
-                this.removed = [];
-                this.mainCollection.reset();
-                localStorage.clear();
-            });
-
-            this.introCollection = new Backbone.Collection();
-            this.introContainer = kb.observableCollection(this.introCollection, {});
-            this.setIntro();
-            this.container.subscribe(() => {
+                this.introCollection = new Backbone.Collection();
+                this.introContainer = kb.observableCollection(this.introCollection, {});
                 this.setIntro();
-            })
+                this.container.subscribe(() => {
+                    this.setIntro();
+                })
 
-            this.isLoaded(true);
+                this.isLoaded(true);
+
+                this.addButton = $('.add-series');
+                this.restoreButton = $('.restore-series');
+                // this.clearButton = $('.clear-series');
+
+                this.addButton.click(() => {
+                    this.openModal();
+                });
+                this.restoreButton.click(() => {
+                    this.restoreRemoved();
+                });
+                // this.clearButton.click(() => {
+                //     this.restoreButton.hide();
+                //     this.removed = [];
+                //     localStorage.clear();
+                //     this.mainCollection.reset();
+                //     this.viewModelReady();
+                // });
+            }, 50);
         }
     };
 

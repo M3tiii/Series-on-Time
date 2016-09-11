@@ -9,7 +9,7 @@
                         <p class="overview">Without registration!</p>
                         <p class="overview">
                             Click
-                            <a><span class="glyphicon glyphicon glyphicon-plus add-series" aria-hidden="true"></span></a> to add new series
+                            <a data-bind="click: openModal"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span></a> to add new series
                         </p>
                     </div>
                     <div class="intro-text" data-bind="if: $data.container().length">
@@ -40,7 +40,7 @@
             <div class="row">
                 <div data-bind="if: $data.isLoaded">
                     <div data-bind="foreach: $data.container">
-                        <div class="col-sm-3 col-xs-6">
+                        <div class="col-sm-3 col-xs-6 content-box">
                             <div class="img-container">
                                 <div class="hovereffect">
                                     <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster, name) }">
@@ -50,6 +50,9 @@
                                     <div class="overlay">
                                         <h2 data-bind="text: name"></h2>
                                         <a class="info" data-bind="click: function(context, event){$parent.removeSeries(this, context, event)}">Remove</a>
+                                        <a class="info" target="_blank" data-bind="if: homepage(), attr: { href: homepage }" title="Visit homepage">
+                                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
