@@ -67,7 +67,6 @@ let ViewModel = function() {
 
                 this.addButton = $('.add-series');
                 this.restoreButton = $('.restore-series');
-                // this.clearButton = $('.clear-series');
 
                 this.addButton.click(() => {
                     this.openModal();
@@ -75,13 +74,6 @@ let ViewModel = function() {
                 this.restoreButton.click(() => {
                     this.restoreRemoved();
                 });
-                // this.clearButton.click(() => {
-                //     this.restoreButton.hide();
-                //     this.removed = [];
-                //     localStorage.clear();
-                //     this.mainCollection.reset();
-                //     this.viewModelReady();
-                // });
             }, 50);
         }
     };

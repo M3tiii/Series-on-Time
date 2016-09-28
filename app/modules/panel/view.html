@@ -25,7 +25,7 @@
                                 <span class="name" data-bind="text: name"></span>
                                 <hr class="line-light">
                                 <p class="overview" data-bind="text: episodeName"></p>
-                                <!-- + ' s' + seasonNumber() + 'e' + episodeNumber() -->
+                                <!-- <p class="overview" data-bind="text: 'season ' + seasonNumber() + ' episod' + episodeNumber()"></p> -->
                                 <p class="overview" data-bind="text: airDate"></p>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                                     <div class="overlay">
                                         <h2 data-bind="text: name"></h2>
                                         <a class="info" data-bind="click: function(context, event){$parent.removeSeries(this, context, event)}">Remove</a>
-                                        <a class="info" target="_blank" data-bind="if: homepage(), attr: { href: homepage }" title="Visit homepage">
+                                        <a class="info" target="_blank" data-bind="if: isActual, attr: { href: homepage }" title="Visit homepage">
                                             <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                                         </a>
                                     </div>
