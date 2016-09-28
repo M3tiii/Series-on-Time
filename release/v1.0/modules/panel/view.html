@@ -1,0 +1,66 @@
+<header id="page-top">
+    <div class="intro-content">
+        <div class="row">
+            <div data-bind="if: $data.isLoaded">
+                <div class="intro-start" data-bind="ifnot: $data.introLoaded">
+                    <img class="img-responsive" alt="" src="assets/bc.jpg">
+                    <div class="intro-text" data-bind="ifnot: $data.container().length">
+                        <p class="overview">Add your favorite show and keep eye on the new episodes</p>
+                        <p class="overview">Without registration!</p>
+                        <p class="overview">
+                            Click
+                            <a data-bind="click: openModal"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span></a> to add new series
+                        </p>
+                    </div>
+                    <div class="intro-text" data-bind="if: $data.container().length">
+                        <p class="overview">We are sorry</p>
+                        <p class="overview">Currently, your series does not emit new episodes</p>
+                    </div>
+                </div>
+                <div>
+                    <div data-bind="if: $data.introLoaded">
+                        <div data-bind="foreach: $data.introContainer">
+                            <img class="img-responsive" alt="" data-bind="attr: { src: $parent.getPosterPath(backdrop, name, 'w1280') }">
+                            <div class="intro-text">
+                                <span class="name" data-bind="text: name"></span>
+                                <hr class="line-light">
+                                <p class="overview" data-bind="text: episodeName"></p>
+                                <!-- <p class="overview" data-bind="text: 'season ' + seasonNumber() + ' episod' + episodeNumber()"></p> -->
+                                <p class="overview" data-bind="text: airDate"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</header>
+<div class="content-wrapper">
+    <section class="primary">
+        <div class="container">
+            <div class="row">
+                <div data-bind="if: $data.isLoaded">
+                    <div data-bind="foreach: $data.container">
+                        <div class="col-sm-3 col-xs-6 content-box">
+                            <div class="img-container">
+                                <div class="hovereffect">
+                                    <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster, name) }">
+                                    <div data-bind="if: isActual">
+                                        <h1 class="days-left" data-bind="text: days"></h1>
+                                    </div>
+                                    <div class="overlay">
+                                        <h2 data-bind="text: name"></h2>
+                                        <a class="info" data-bind="click: function(context, event){$parent.removeSeries(this, context, event)}">Remove</a>
+                                        <a class="info" target="_blank" data-bind="if: isActual, attr: { href: homepage }" title="Visit homepage">
+                                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-bind="template: {name: Modal().name, data: Modal().data}"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
