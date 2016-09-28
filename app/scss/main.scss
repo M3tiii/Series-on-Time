@@ -1,6 +1,6 @@
 @import "bootstrap";
 @import "bootstrap/theme";
-@import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
+// @import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css");
 
 body {
   background-color: #white;
@@ -41,7 +41,7 @@ a:hover {
 }
 
 .modal .modal-box img {
-  max-height: 272px;
+  height: 272px;
   width: 185px;
   display: block;
   margin-left: auto;
