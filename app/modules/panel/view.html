@@ -45,7 +45,8 @@
                                 <div class="hovereffect">
                                     <img alt="" class="img-responsive" data-bind="attr: { src: $parent.getPosterPath(poster, name) }">
                                     <div data-bind="if: isActual">
-                                        <h1 class="days-left" data-bind="text: days"></h1>
+                                        <h1 class="days-left large" data-bind="text: days"></h1>
+                                        <h4 data-bind="if: days" class="days-left small">days left</h4>
                                     </div>
                                     <div class="overlay">
                                         <h2 data-bind="text: name"></h2>
